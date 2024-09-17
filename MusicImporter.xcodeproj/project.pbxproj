@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9429B5352C97362200FA701A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9429B5342C97362200FA701A /* main.m */; };
+		944AE46E2C978CD100939371 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944AE46D2C978CD100939371 /* ScriptingBridge.framework */; };
+		944AE4702C9794F600939371 /* Music.h in Sources */ = {isa = PBXBuildFile; fileRef = 9429B53B2C97365500FA701A /* Music.h */; };
+		944AE4722C97985F00939371 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 944AE4712C97985F00939371 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,10 @@
 /* Begin PBXFileReference section */
 		9429B5312C97362200FA701A /* MusicImporter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MusicImporter; sourceTree = BUILT_PRODUCTS_DIR; };
 		9429B5342C97362200FA701A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9429B53B2C97365500FA701A /* Music.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = Music.h; sourceTree = "<group>"; };
+		944AE46D2C978CD100939371 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		944AE4712C97985F00939371 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		944AE4732C97A05800939371 /* MusicImporter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MusicImporter.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				944AE4722C97985F00939371 /* Foundation.framework in Frameworks */,
+				944AE46E2C978CD100939371 /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +52,7 @@
 			children = (
 				9429B5332C97362200FA701A /* MusicImporter */,
 				9429B5322C97362200FA701A /* Products */,
+				944AE46C2C978CD100939371 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +67,20 @@
 		9429B5332C97362200FA701A /* MusicImporter */ = {
 			isa = PBXGroup;
 			children = (
+				944AE4732C97A05800939371 /* MusicImporter.entitlements */,
+				9429B53B2C97365500FA701A /* Music.h */,
 				9429B5342C97362200FA701A /* main.m */,
 			);
 			path = MusicImporter;
+			sourceTree = "<group>";
+		};
+		944AE46C2C978CD100939371 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				944AE4712C97985F00939371 /* Foundation.framework */,
+				944AE46D2C978CD100939371 /* ScriptingBridge.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				944AE4702C9794F600939371 /* Music.h in Sources */,
 				9429B5352C97362200FA701A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,20 +266,30 @@
 		9429B5392C97362200FA701A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PRV225SJUU;
-				ENABLE_HARDENED_RUNTIME = YES;
+				CODE_SIGN_ENTITLEMENTS = MusicImporter/MusicImporter.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualworx.musicimporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		9429B53A2C97362200FA701A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PRV225SJUU;
-				ENABLE_HARDENED_RUNTIME = YES;
+				CODE_SIGN_ENTITLEMENTS = MusicImporter/MusicImporter.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualworx.musicimporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
