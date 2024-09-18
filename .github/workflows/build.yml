@@ -2,8 +2,6 @@ name: Build Xcode Project and Create Release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - '*'  # Triggers on any tag push
 
