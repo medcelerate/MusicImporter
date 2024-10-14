@@ -35,6 +35,68 @@ NSArray<NSString *> *getTopLevelDirectoriesAtPath(NSString *path) {
     return [directories copy];
 }
 
+BOOL checkOrInsertDB(NSString* filePath) {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+       NSString *appSupportDir = [paths firstObject];
+
+       // Append "MusicImporter" to the path
+       NSString *musicImporterDir = [appSupportDir stringByAppendingPathComponent:@"MusicImporter"];
+
+       // Ensure the MusicImporter directory exists
+       NSFileManager *fileManager = [NSFileManager defaultManager];
+       BOOL isDir = NO;
+       if (![fileManager fileExistsAtPath:musicImporterDir isDirectory:&isDir] || !isDir) {
+           NSError *dirError = nil;
+           [fileManager createDirectoryAtPath:musicImporterDir withIntermediateDirectories:YES attributes:nil error:&dirError];
+           if (dirError) {
+               NSLog(@"Error creating directory: %@", dirError.localizedDescription);
+               return NO;
+           }
+       }
+
+       // Construct the path to Songs.db
+       NSString *songsDBPath = [musicImporterDir stringByAppendingPathComponent:@"Songs.db"];
+
+       // Check if Songs.db exists, if not, create it
+       if (![fileManager fileExistsAtPath:songsDBPath]) {
+           // Create an empty file
+           BOOL success = [fileManager createFileAtPath:songsDBPath contents:nil attributes:nil];
+           if (!success) {
+               NSLog(@"Failed to create Songs.db");
+               return NO;
+           }
+       }
+
+       // Read the contents of Songs.db
+       NSError *readError = nil;
+       NSString *fileContents = [NSString stringWithContentsOfFile:songsDBPath encoding:NSUTF8StringEncoding error:&readError];
+       if (readError) {
+           NSLog(@"Error reading Songs.db: %@", readError.localizedDescription);
+           return NO;
+       }
+
+       // Separate the contents into lines
+       NSArray *lines = [fileContents componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+       // Check if the filename is in the list
+    NSString* filename = [filePath lastPathComponent];
+       for (NSString *line in lines) {
+           if ([line isEqualToString:filename]) {
+               // Filename found
+               return YES;
+           }
+       }
+
+         // Append the filename to the file
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:songsDBPath];
+        [fileHandle seekToEndOfFile];
+        [fileHandle writeData:[[filename stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [fileHandle closeFile];
+       // Filename not found
+       return NO;
+    
+}
+
 int main(int argc, const char * argv[]) {
     
     if (argc < 2) {
@@ -142,6 +204,10 @@ int main(int argc, const char * argv[]) {
                     }
                     //Add the song to the playlist
                     bool isSongInPlaylist = false;
+                    if (checkOrInsertDB(fullItemPath)) {
+                        NSLog(@"Song already exists in DB: %@", item);
+                        continue;
+                    }
                     for (MusicFileTrack* track in [Playlist tracks]) {
                         // Get last item of NSURL
                         NSString* FileName = [track.location lastPathComponent];
@@ -151,6 +217,7 @@ int main(int argc, const char * argv[]) {
                             break;
                         }
                     }
+                    
                     //convert fullitempath to NSARRAY of NSURL
                     NSURL* url = [NSURL fileURLWithPath:fullItemPath];
                     NSArray<NSURL *> *urls = [NSArray arrayWithObject:url];
@@ -179,6 +246,10 @@ int main(int argc, const char * argv[]) {
                                 ![subFullItemPath.pathExtension isEqualToString:@"aif"] &&
                                 ![subFullItemPath.pathExtension isEqualToString:@"aiff"]
                                 ) {
+                                continue;
+                            }
+                            if (checkOrInsertDB(subFullItemPath)) {
+                                NSLog(@"Song already exists in DB: %@", subFullItemPath);
                                 continue;
                             }
                             //Add the song to the playlist
