@@ -8,3 +8,6 @@ The tool creates playlist based on the directories present in the pointed direct
 ```
 ./MusicImporter /path/to/music
 ```
+
+### DB File
+The tool creates a Songs.db file in `Application Support/MusicImporter`. If you have any issues delete this file and rerun.
